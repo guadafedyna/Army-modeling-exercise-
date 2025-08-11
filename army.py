@@ -1,15 +1,15 @@
 
-
 class Unit:
-    """ clase que representa una Unidad.
+    """ class that represents a Unit.
     """
     def __init__(self, type, strength, years_alive):
         """ 
-        inicializa una nueva instancia de Unidad.
+        initializes a new instance of Unit.
+
         Args: 
-        type(str) : tipo de la unidad(pikeman, archer or knight).
-        strength(int) : puntos de fuerza de la unidad. 
-        years_alive(int) : años de vida que tiene la unidad. 
+        type(str) : type of the unit (pikeman, archer or knight).
+        strength(int) : strength points. 
+        years_alive(int) : age of the unit. 
 
         """
         self.type = type
