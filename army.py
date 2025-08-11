@@ -182,7 +182,7 @@ def wallet(army:dict, amount: int):
     army['coins'] += amount 
 
 
-def ask_years_alive(army:dict, unit_type:int, unit_id:int):
+def ask_years_alive(army:dict, unit_type:int, unit_id:int) -> int:
     """
     returns the years alive attribute from a specific unit
 
