@@ -1,7 +1,17 @@
 
 
 class Unit:
+    """ clase que representa una Unidad.
+    """
     def __init__(self, type, strength, years_alive):
+        """ 
+        inicializa una nueva instancia de Unidad.
+        Args: 
+        type(str) : tipo de la unidad(pikeman, archer or knight).
+        strength(int) : puntos de fuerza de la unidad. 
+        years_alive(int) : años de vida que tiene la unidad. 
+
+        """
         self.type = type
         self.strength = strength
         self.years_alive = years_alive
@@ -10,6 +20,12 @@ class Unit:
         return f'Unit type = {self.type}, strength= {self.strength}, years_alive={self.years_alive}'
     
     def training(self):
+        """
+        trains the units based on its type, increasing its strength and years alive.
+        pikemen: gain +3 strength and +1 year alive
+        archer: gain +7 strength and +2 year alive
+        knights: gain +10 strength and +5 year alive
+        """
         if self.type == "pikeman":
             self.years_alive += 1
             benefit = 3
@@ -29,6 +45,9 @@ class Unit:
 
     
     def training_cost(self):
+        """
+        returns the cost of training a given unit. 
+        """
         if self.type == "pikeman":
             cost = 10
         elif self.type == "archer":
@@ -40,6 +59,12 @@ class Unit:
         return cost 
     
     def transformation(self):
+        """
+        transforms a unit into a higher-tier type, changing its strength and increasing its years alive. 
+        pikemen: transforms into archer, changes to +10 strength, gains +5 years.
+        archer: transforms into knight, changes to +20 strength, gains +5 years alive 
+        knights cannot transform 
+        """
         if self.type == "pikeman":
             self.type = "archer"
             self.strength = 10
@@ -52,6 +77,9 @@ class Unit:
 
     
     def transformation_cost(self):
+        """
+        returns the cost to transform the unit based on its type
+        """
         if self.type == "pikeman":
             t_cost = 30
         elif self.type == "archer":
@@ -71,6 +99,16 @@ initial_units = {
 
 
 def create_army(civilization: str) -> dict:
+    """
+    creates an initial army dictionary based on the civilization.
+    
+    Args: 
+    civilization(str) : the name of the civilization(chinese, english or byzantines )
+
+    Returns:
+    army: a dictionary representing the army containing the keys: civilization, coins, battle_history and units.
+
+    """
     army = {}
     pikemen = []
     archers = []
@@ -98,6 +136,14 @@ def create_army(civilization: str) -> dict:
 
 
 def train(army:dict, unit_type: int, unit_id: int):
+    """
+    trains a specific unit if the army has enough coins. 
+
+    Args: 
+    army(dict): the army where the unit belongs 
+    unit_type(int) : index of unit types. 0= pikemen, 1= archers, 2 = knights
+    unit_id(int) : index of the unif in the unit type list. 
+    """
     unit = army['units'][unit_type][unit_id]
     cost = unit.training_cost()
 
@@ -110,6 +156,14 @@ def train(army:dict, unit_type: int, unit_id: int):
 
 
 def transform(army:dict, unit_type:int, unit_id: int):
+    """
+    transforms a specific unit if the army has enough coins.
+
+    Args: 
+    army(dict): the army where the unit belongs.
+    unit_type(int): index of unit types.  0= pikemen, 1= archers, 2 = knights
+    unit_id(int) : index of the unif in the unit type list. 
+    """
     unit = army['units'][unit_type][unit_id]
     transf_cost = unit.transformation_cost()
 
@@ -122,15 +176,29 @@ def transform(army:dict, unit_type:int, unit_id: int):
 
 
 def wallet(army:dict, amount: int):
+    """
+    adds or substracts a certain amount of coins from an army. 
+    """
     army['coins'] += amount 
 
 
 def ask_years_alive(army:dict, unit_type:int, unit_id:int):
-    unit = army['units '][unit_type][unit_id]
+    """
+    returns the years alive attribute from a specific unit
+
+    Args:
+    army: army dictionary
+    unit_type: index of the unit type. 0= pikemen, 1= archers, 2 = knights.
+    unid_id: index of the unit in the specific type list. 
+    """
+    unit = army['units'][unit_type][unit_id]
     years_alive = unit.years_alive
     return years_alive
 
 def strength_points(army: dict):
+    """
+    returns the total strength points of all units in an army.
+    """
     points = 0
 
     for types in army['units']:
@@ -139,6 +207,9 @@ def strength_points(army: dict):
     return points 
 
 def lose_unit(army:dict):
+    """
+    deletes the unit with the highest strength from an army. 
+    """
     highest = army['units'][0][0]
     highest_type = 0
     highest_unit = 0
@@ -155,6 +226,10 @@ def lose_unit(army:dict):
 
 
 def battle(army1: dict, army2: dict):
+    """
+    creates a battle between two armies comparing their strength points and updating the winner's coins, 
+    removing units from the losing army and updating both their battle history. 
+    """
 
     points1 = strength_points(army1)
     points2 = strength_points(army2)
