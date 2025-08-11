@@ -126,5 +126,81 @@ def wallet(army:dict, amount: int):
 
 
 def ask_years_alive(army:dict, unit_type:int, unit_id:int):
-    unit = army['units ']
+    unit = army['units '][unit_type][unit_id]
+    years_alive = unit.years_alive
+    return years_alive
+
+def strength_points(army: dict):
+    points = 0
+
+    for types in army['units']:
+        for unit in types:
+            points += unit.strength
+    return points 
+
+def lose_unit(army:dict):
+    highest = army['units'][0][0]
+    highest_type = 0
+    highest_unit = 0
+
+    for t in range(len(army['units'])):
+        for u in range(len(army['units'][t])):
+            if army['units'][t][u].strength > highest.strength:
+                highest = army['units'][t][u]
+                highest_type = t 
+                highest_unit = u 
+
+    del army['units'][highest_type][highest_unit]
+
+
+
+def battle(army1: dict, army2: dict):
+
+    points1 = strength_points(army1)
+    points2 = strength_points(army2)
+
+    name1 = army1['civilization']
+    name2 = army2['civilization']
+
+    if points1 > points2:
+        wallet(army1,100)
+        history1 = {'opponent': name2, 'result': 'winner'}
+        army1['battle_history'].append(history1)
+        print("¡army 1 is the winner!")
+
+        history2 = {'opponent': name1, 'result':'loser'}
+        army2['battle_history'].append(history2)
+        lose_unit(army2)
+        lose_unit(army2)
+
+    elif points2 > points1:
+        wallet(army2,100)
+        history2 = {'opponent': name1, 'result':'winner'}
+        army2['battle_history'].append(history2)
+        print("¡army 2 is the winner!")
+
+        lose_unit(army1)
+        lose_unit(army1)
+
+        history1= {'opponent': name2,'result':'loser'}
+        army1['battle_history'].append(history1)
+
+    elif points1 == points2:
+        lose_unit(army1)
+        lose_unit(army2)
+        print("it's a tie")
+
+        history1 = {'opponent': name2,'result': 'tie'}
+        army1['battle_history'].append(history1)
+
+        history2 = {'opponent': name1, 'result':'tie'}
+        army2['battle_history'].append(history2)
+
+
+        
+
+
+
+
+    
  
